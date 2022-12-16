@@ -1,13 +1,17 @@
-let EMPTY = '#e3e3e3';
-let board_solved, board_unsolved;
+document.body.onload = BodyLoad;
+
+var EMPTY = '#e3e3e3', NORMAL = '#207bff', ERROR = '#fc4e4e',
+    H_EMPTY = '#d0c4e8', H_ROW_COL = '#7d4efc', H_CELL = '#00e8f2', H_OCC = '#7a49a5';
+
+var board_solved, board_unsolved;
 
 function SetIds() {
-    let i = 0, j = 0;
-    for (let table_row_elem of document.getElementsByTagName('tr')) {
-        for (let table_col_elem of table_row_elem.getElementsByTagName('td')) {
-            for (let part of table_col_elem.getElementsByTagName('button')) {
-                if (part.nodeType === Node.ELEMENT_NODE) {
-                    part.id = `c${i}${j}`;
+    var i = 0, j = 0;
+    for (let row of document.getElementsByTagName('tr')) {
+        for (let col of row.getElementsByTagName('td')) {
+            for (let cell of col.getElementsByTagName('button')) {
+                if (cell.nodeType === Node.ELEMENT_NODE) {
+                    cell.id = `c${i}${j}`;
                     j++;
                 }
             }
@@ -30,11 +34,14 @@ function SetSudoku() {
 }
 
 function BuildBoard(diff) {
-    let game = Play(diff);
+    var game = Play(diff);
     board_solved = game[0];
-    board_unsolved = game[1][0];
+    board_unsolved = game[1];
+
 }
 
-SetIds();
-BuildBoard('e');
-SetSudoku();
+function BodyLoad() {
+    SetIds();
+    BuildBoard('e');
+    SetSudoku();
+}

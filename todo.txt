@@ -2,34 +2,20 @@ font Segoe UI Black
 
 colors:
 #e3e3e3 empty cell
-#207bff normal cell
-#fc4e4e error cell
+#207bff normal cell blue
+#fc4e4e error cell 
 
 #d0c4e8 highlighted empty cell
 #7d4efc highlighted row and col
 
-#00e8f2 highlighted cell (the one that was clicked)
+#00e8f2 highlighted cell (the one that was clicked) light blue
 
 #7a49a5 highlighted all occurrences of (the value of the clicked cell)
 
 *********************
+home page (menu)                                                                *Dina*
 
-home page (menu)                                                                *A*
-
-game page:
-	timer with play and pause (make sure to disable playing while paused)       *A*
-
-	highlight function                                                          *B*
-	
-	write function (includes making input buttons)                              *C*
-	
-	undo function  (hint: u will use a stack) (includes making undo button)     *C*
-	hint function  (includes making hint button)                                *D*
-	erase function (includes making erase button)                               *D*
-	
-
-
-settings page: (includes applying settings on game)                             *D*
+settings page: (includes applying settings on game)                             *Dina*
 
   **settings will be saved using cookies**
 	timer
@@ -38,3 +24,17 @@ settings page: (includes applying settings on game)                             
 	highlight dup (errors)
 	highlight area
 	highlight Identical
+
+game page:
+	highlight function                                                          *Khaled*
+
+	timer with play and pause (make sure to disable playing while paused)       *Dina*
+
+	
+	write function  and mistake (includes making input buttons)                 *Raouf*
+	undo function  (no mistake) (hint: u will use a stack) (includes making undo button) *Raouf*
+	
+	
+	
+	hint function (max 3) (includes making hint button)                         *Karim*
+	erase function (includes making erase button)                               *Karim*
