@@ -1,4 +1,4 @@
-body{
+body {
     text-align: center;
     background-image: url("../assets/BG.jpg");
     background-size: cover;
@@ -6,29 +6,29 @@ body{
     background-position: center center;
 }
 
-div{
+div {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-table{
+table {
     margin-right: auto;
     margin-left: auto;
     padding-top: 10px;
 }
 
-td{
+td {
     padding-left: 10px;
     padding-bottom: 5px;
     display: inline-block;
 }
 
-tr{
+tr {
     display: block;
     padding-bottom: 5px;
 }
 
-.num_block{
+.num_block {
 
     width: 50px;
     height: 50px;
@@ -43,18 +43,36 @@ tr{
     text-align: center;
 
     color: white;
-    background-color:#207bff ;
+    background-color: #207bff;
     border-radius: 15px;
     border-style: none;
 
     font-size: 30px;
-    font-family: "Segoe UI Black",serif;
+    font-family: "Segoe UI Black", serif;
 }
 
-button:hover {opacity: 80%;}
+button:hover {
+    opacity: 80%;
+}
 
-button:active {transform: translateY(4px);}
+button:active {
+    transform: translateY(4px);
+}
 
-#r3, #r6{
+#r3,
+#r6 {
     padding-bottom: 20px;
+}
+
+
+#controls {
+    display: flex;
+}
+
+#eraser {
+    margin-left: 90%;
+
+}
+#hint{
+    margin-right: 90%;
 }
