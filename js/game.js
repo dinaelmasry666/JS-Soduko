@@ -181,5 +181,5 @@ function Hint(){
     SetSudoku();
     //delete this value form the erasable array to not be deleted by erase
     erasable.splice(index,1);
-    // static counter to allow 3 hints only
+    // static counter to allow 3 hints only.
 }
