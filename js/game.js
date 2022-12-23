@@ -59,33 +59,45 @@ function HighlightBox(r, c) {
 
     for (let i = r; i < r + 3; i++) {
         for (let j = c; j < c + 3; j++) {
-            if (board_unsolved[i][j] === 0)
-                document.getElementById(`c${i}${j}`).style.backgroundColor = H_EMPTY;
-            else
-                document.getElementById(`c${i}${j}`).style.backgroundColor = H_AREA;
+            var cell = document.getElementById(`c${i}${j}`);
+            if (cell.style.backgroundColor !== ERROR) {
+                if (board_unsolved[i][j] === 0)
+                    cell.style.backgroundColor = H_EMPTY;
+                else
+                    cell.style.backgroundColor = H_AREA;
+            }
         }
     }
 }
 
 function HighlightRowCol(r, c) {
     for (let i = 0; i < 9; i++) {
-        if (board_unsolved[r][i] === 0)
-            document.getElementById(`c${r}${i}`).style.backgroundColor = H_EMPTY;
-        else
-            document.getElementById(`c${r}${i}`).style.backgroundColor = H_AREA;
+        var cell_r = document.getElementById(`c${r}${i}`),
+            cell_c = document.getElementById(`c${i}${c}`);
 
-        if (board_unsolved[i][c] === 0)
-            document.getElementById(`c${i}${c}`).style.backgroundColor = H_EMPTY;
-        else
-            document.getElementById(`c${i}${c}`).style.backgroundColor = H_AREA;
+        if (cell.style.backgroundColor !== ERROR) {
+            if (board_unsolved[r][i] === 0)
+                cell_r.style.backgroundColor = H_EMPTY;
+            else
+                cell_r.style.backgroundColor = H_AREA;
+        }
+
+        if (cell.style.backgroundColor !== ERROR) {
+            if (board_unsolved[i][c] === 0)
+                cell_c.style.backgroundColor = H_EMPTY;
+            else
+                cell_c.style.backgroundColor = H_AREA;
+        }
     }
 }
 
 function HighlightNumber(n) {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (board_unsolved[i][j] === n)
-                document.getElementById(`c${i}${j}`).style.backgroundColor = H_OCC;
+            var cell = document.getElementById(`c${i}${j}`);
+
+            if (cell.style.backgroundColor !== ERROR && board_unsolved[i][j] === n)
+                cell.style.backgroundColor = H_OCC;
         }
     }
 }
@@ -93,10 +105,14 @@ function HighlightNumber(n) {
 function ResetHighlight() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (board_unsolved[i][j] === 0)
-                document.getElementById(`c${i}${j}`).style.backgroundColor = EMPTY;
-            else
-                document.getElementById(`c${i}${j}`).style.backgroundColor = NORMAL;
+            var cell = document.getElementById(`c${i}${j}`);
+
+            if (cell.style.backgroundColor !== ERROR) {
+                if (board_unsolved[i][j] === 0)
+                    cell.style.backgroundColor = EMPTY;
+                else
+                    cell.style.backgroundColor = NORMAL;
+            }
         }
     }
 }
@@ -110,6 +126,9 @@ function Highlight(r, c) {
 
     document.getElementById(`c${r}${c}`).style.backgroundColor = H_CELL;
 }
+
+//error functions should be called after undo, hint, write.
+//highlight should not change any cell with error background
 
 function HighlightSolutionError(r, c) {
     if (board_unsolved[r][c] !== board_solved[r][c])
