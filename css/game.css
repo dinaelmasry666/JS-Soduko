@@ -14,7 +14,7 @@ div{
 table{
     margin-right: auto;
     margin-left: auto;
-    padding-top: 10px;
+    padding-top: 30px;
 }
 
 td{
@@ -27,6 +27,8 @@ tr{
     display: block;
     padding-bottom: 5px;
 }
+
+/* note: this is the styling for each button.  */
 
 .num_block{
 
@@ -55,6 +57,8 @@ button:hover {opacity: 80%;}
 
 button:active {transform: translateY(4px);}
 
+
+/* we chose those rows espcially to sperate each section.  */
 #r3, #r6{
     padding-bottom: 20px;
 }
