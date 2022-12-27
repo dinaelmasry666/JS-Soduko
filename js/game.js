@@ -51,6 +51,8 @@ function BodyLoad() {
     SetCellOnClick();
     BuildBoard('e');
     SetSudoku();
+    toggleSelectedNumbers();
+    toggleNotes();
 }
 
 function HighlightBox(r, c) {
@@ -132,4 +134,62 @@ function CellClick(evt) {
     //HighlightSolutionError(r,c);
     //to check if the input caused a game rule violation call
     //HighlightRuleError(); //NOT YET WORKING
+}
+
+
+function toggleSelectedNumbers() {
+
+    var header = document.getElementById("findSelectedNumberDiv");
+    var btns = header.getElementsByTagName("button");
+    for (var i = 0; i < btns.length; i++) {
+
+        /*   1- Add Event listener to each number key.  */
+        btns[i].addEventListener("click", function () {
+
+            /*   2- this registers a list of all the elements that has "numSelected" class name */
+            var current = document.getElementsByClassName("numSelected");
+
+            /* 3- we check first if we the same key is pressed , if true -- we remove the selection
+             if false --> we   */
+
+            console.log(this.classList.contains("numSelected")); // testing
+
+            if (this.classList.contains("numSelected")) {
+                current[0].className = current[0].className.replace("numSelected", "");
+                console.log("same Btn were selected")
+            }
+            else {
+                if (current.length > 0) {
+                    current[0].className = current[0].className.replace("numSelected", "");
+                    this.className += " numSelected";
+                }
+                else {
+                    this.className += " numSelected";
+                }
+            }
+        });
+    }
+
+}
+
+function toggleNotes() {
+
+    document.getElementsByClassName("notesStyle")[0].addEventListener("click", function () {
+        var current = document.getElementsByClassName("notesSelected");
+
+        if (this.classList.contains("notesSelected")) {
+            current[0].className = current[0].className.replace("notesSelected", "");
+            console.log("notesBtnOff")
+        }
+        else {
+
+            /* note: it's really important to keep space at the begaining of the qoutes here 
+                          
+            */
+
+            this.className += " notesSelected";
+
+        }
+
+    });
 }

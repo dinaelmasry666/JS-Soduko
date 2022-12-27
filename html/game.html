@@ -1,213 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Sudoku</title>
-    <link rel="stylesheet" href="../css/game.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Sudoku</title>
+        <link rel="stylesheet" href="../css/game.css">
+    </head>
 
-<body>
-    <table>
-        <tbody>
-            <tr>
+    <body>
+        <table>
+            <tbody>
+                <tr>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
+                <tr>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-            <tr id="r3">
+                </tr>
+                <tr id="r3">
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-
-
-            <tr>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-            </tr>
-            <tr>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-            </tr>
-            <tr id="r6">
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
-
-            </tr>
+                </tr>
 
 
-            <tr>
+                <tr>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
+                <tr>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
+                <tr id="r6">
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-                <td>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                    <button class="num_block"></button>
-                </td>
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
 
-            </tr>
-        </tbody>
-    </table>
+                </tr>
 
-    <script src="../js/SudokuGenerator.js"></script>
-    <script src="../js/game.js"></script>
-</body>
+
+                <tr>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                    <td>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                        <button class="num_block"></button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+
+        <div class="controlsContainer">
+            <div id="controlsBorder">
+
+
+                <button class="numControl undoStyle" value="undo" id="undo"> <img
+                        src="../assets/game/undo.png"> </button>
+                <button class="numControl notesStyle" value="notes" id="notes"> <img
+                        src="../assets/game/draft.png"> </button>
+
+                <div id="findSelectedNumberDiv">
+
+                    <button class="numControl " value="1">1</button>
+                    <button class="numControl " value="2">2</button>
+                    <button class="numControl " value="3">3</button>
+                    <button class="numControl " value="4">4</button>
+                    <button class="numControl " value="5">5</button>
+                    <button class="numControl " value="6">6</button>
+                    <button class="numControl " value="7">7</button>
+                    <button class="numControl " value="8">8</button>
+                    <button class="numControl " value="9">9</button>
+
+
+                </div>
+
+
+
+                <button class="numControl eraserStyle " value="eraser" id="eraser">
+                    <img src="../assets/game/eraser.png">
+                </button>
+                <button class="numControl ideaStyle " value="idea" id="idea">
+                    <img src="../assets/game/idea.png">
+                </button>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <script src="../js/SudokuGenerator.js"></script>
+        <script src="../js/game.js"></script>
+    </body>
 
 </html>

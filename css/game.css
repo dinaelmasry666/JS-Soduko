@@ -14,7 +14,7 @@ div{
 table{
     margin-right: auto;
     margin-left: auto;
-    padding-top: 10px;
+    padding-top: 50px;
 }
 
 td{
@@ -27,6 +27,8 @@ tr{
     display: block;
     padding-bottom: 5px;
 }
+
+/* note: this is the styling for each button.  */
 
 .num_block{
 
@@ -55,6 +57,136 @@ button:hover {opacity: 80%;}
 
 button:active {transform: translateY(4px);}
 
+
+/* we chose those rows espcially to sperate each section.  */
 #r3, #r6{
     padding-bottom: 20px;
 }
+
+/* Control buttons  */
+
+
+img {
+    
+    padding-top: 5px;
+    height: 38px;
+    width: 38px;
+    
+}
+
+
+/* div containers */
+.controlsContainer{
+   
+
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+#controlsBorder{
+
+    width: 740px; 
+    height: 150px;
+    border-radius: 15px;
+    /* border: solid 3px; */
+    background-color: #D6CDA4;
+    padding: 10px;
+    display: flex;
+    justify-content:left;
+    align-items: center;
+
+    background: #eee;
+  box-shadow: 0 8px 8px 4px lightblue;
+  padding-top: 30px;
+    
+    
+}
+
+/* numberStyling - similar to the boxes but edited */
+.numControl{
+
+    width: 50px;
+    height: 50px;
+
+    vertical-align: middle;
+    line-height: 50px;
+
+    margin-left: 2px;
+    margin-right: 2px;
+
+    display: inline-block;
+    text-align: center;
+
+    color: white;
+    background-color:#88125b ;
+    border-radius: 15px;
+    border-style: none;
+
+    font-size: 30px;
+    font-family: "Segoe UI Black",serif;
+}
+
+/* Right side elements */
+
+.eraserStyle{
+    position: relative;
+    left: 30px;
+  
+    background-color:#0e4678 ;
+}
+
+.eraserStyle:active {
+    background-color:#bb2b07 ; 
+  }
+
+.ideaStyle{
+    position: relative;
+    bottom: 55px;
+    right:23px;
+    background-color:#0e4678 ;  
+}
+
+.ideaStyle:active {
+    background-color:#c5c21c ; 
+  }
+
+/* Left side  elements*/
+
+.notesStyle{
+    position: relative;
+    background-color:#0e4678 ;
+    right: 30px;
+}
+.undoStyle{
+    position: relative;
+    bottom: 55px;
+    left: 23px;
+    background-color:#0e4678 ;
+}
+
+.undoStyle:active {
+    background-color:#2cb2f0 ; 
+  }
+
+
+
+/* toggle selection by class -important when writing numbers */
+
+.numSelected{
+    
+    /* https://codersblock.com/blog/creating-glow-effects-with-css/ */
+    background-color:#B6E2A1 ;
+  
+}
+.notesSelected{
+    
+    /* https://codersblock.com/blog/creating-glow-effects-with-css/ */
+    position: relative;
+    background-color:#e4b023 ;
+    right: 30px;
+
+}
+
+/* when active turn the color to  B6E2A1 */
