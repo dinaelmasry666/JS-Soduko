@@ -119,8 +119,8 @@ function ResetHighlight() {
 function Highlight(r, c, highlightMistake, highlightDuplicate) {
     var n = board_unsolved[r][c];
     ResetHighlight();
-    if(highlightDuplicate)HighlightRuleError();
-    if(highlightMistake)HighlightSolutionError(r,c);
+    if (highlightDuplicate) HighlightRuleError();
+    if (highlightMistake) HighlightSolutionError(r, c);
     HighlightBox(r, c);
     HighlightRowCol(r, c);
     if (n !== 0) HighlightNumber(n);
@@ -142,12 +142,12 @@ function HighlightRuleError() {
         for (let j = 0; j < 9; j++) {
             let tmp = board_unsolved[i][j];
 
-            if(tmp!==0)
-                occ1[tmp] = occ1[tmp] === undefined? 1 : occ1[tmp] + 1;
+            if (tmp !== 0)
+                occ1[tmp] = occ1[tmp] === undefined ? 1 : occ1[tmp] + 1;
 
             tmp = board_unsolved[j][i];
-            if(tmp!==0)
-                occ2[tmp] = occ2[tmp] === undefined? 1 : occ2[tmp] + 1;
+            if (tmp !== 0)
+                occ2[tmp] = occ2[tmp] === undefined ? 1 : occ2[tmp] + 1;
         }
         all_occ_r.push(occ1);
         all_occ_c.push(occ2);
@@ -155,49 +155,49 @@ function HighlightRuleError() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let tmp = board_unsolved[i][j];
-            if(tmp !== 0 && all_occ_r[i][tmp] > 1){
+            if (tmp !== 0 && all_occ_r[i][tmp] > 1) {
                 document.getElementById(`c${i}${j}`).style.backgroundColor = ERROR;
             }
 
             tmp = board_unsolved[j][i];
-            if(tmp !== 0 && all_occ_c[i][tmp] > 1){
+            if (tmp !== 0 && all_occ_c[i][tmp] > 1) {
                 document.getElementById(`c${j}${i}`).style.backgroundColor = ERROR;
             }
         }
     }
 
     // BOX
-    var r=0,c=0;
+    var r = 0, c = 0;
     var all_occ = []
     for (let i = 0; i < 9; i++) {
         var occ = {};
         for (let j = r; j < r + 3; j++) {
             for (let k = c; k < c + 3; k++) {
                 let tmp = board_unsolved[j][k];
-                if(tmp!==0)
-                    occ[tmp] = occ[tmp] === undefined? 1 : occ[tmp] + 1;
+                if (tmp !== 0)
+                    occ[tmp] = occ[tmp] === undefined ? 1 : occ[tmp] + 1;
             }
         }
         c += 3;
-        if(c === 9){
+        if (c === 9) {
             c = 0;
             r += 3;
         }
         all_occ.push(occ);
     }
 
-    r=0;c=0;
+    r = 0; c = 0;
     for (let i = 0; i < 9; i++) {
         for (let j = r; j < r + 3; j++) {
             for (let k = c; k < c + 3; k++) {
                 let tmp = board_unsolved[j][k];
-                if(tmp !== 0 && all_occ[i][tmp] > 1){
+                if (tmp !== 0 && all_occ[i][tmp] > 1) {
                     document.getElementById(`c${j}${k}`).style.backgroundColor = ERROR;
                 }
             }
         }
         c += 3;
-        if(c === 9){
+        if (c === 9) {
             c = 0;
             r += 3;
         }
@@ -209,25 +209,25 @@ function CellClick(evt) {
 
 
     //Raouf write
-
-    //region temporary input method
-    var x = parseInt(prompt());
-    if(x.toString()==='NaN') return;
-    board_unsolved[r][c] = x;
-    // loop on inserted and remove the value from it
-    for (let i = 0; i< inserted.length; i++)
-    {
-        if (inserted[i][0] == r && inserted[i][1] == c)
-        {
-            inserted.splice(i, 1);
-            break;
+    if (!eraseMode) {
+        //region temporary input method
+        var x = parseInt(prompt());
+        if (x.toString() === 'NaN') return;
+        board_unsolved[r][c] = x;
+        // loop on inserted and remove the value from it
+        for (let i = 0; i < inserted.length; i++) {
+            if (inserted[i][0] == r && inserted[i][1] == c) {
+                inserted.splice(i, 1);
+                break;
+            }
         }
+        document.getElementById(`c${r}${c}`).innerText = x;
+        //endregion
     }
-    document.getElementById(`c${r}${c}`).innerText = x;
-    //endregion
+
 
     //Kareem if erase is on
-    if (eraseMode)
+    else
         Erase(r, c);
     //call to highlight if needed, last 2 params highlight mistake, highlight duplicate true->on, false -> off
     Highlight(r, c, false, true);
@@ -250,7 +250,8 @@ function Erase(r, c) {
     for (var i = 0; erasable.length; i++) {
         if (erasable[i][0] == r && erasable[i][1] == c) {
             board_unsolved[r][c] == 0;
-            inserted.push([r,c]);
+            inserted.push([r, c]);
+            break;
         }
 
     }
@@ -258,27 +259,32 @@ function Erase(r, c) {
 }
 
 // if the user clicked the eraser it will be true if clicked again it will be false
-$("#eraser").click(() => {                            
-    eraseMode = eraseMode ? false : true;
+$("#eraser").click(() => {
+    eraseMode = !eraseMode;
 })
 
-function Hint(){
+$("#idea").click(() => {
+    Hint();
+})
+
+function Hint() {
     // generate random number
     var rnd = Math.random();
     var index = Math.floor(inserted.length * rnd);
-    
+
     // access erasable array to get that random (r,c)
     var row, col;
     [row, col] = inserted[index];   // destructuring syntax
     // access board_solved to find value at that (r,c)
-    var value= board_solved[row][col];
+    var value = board_solved[row][col];
     // set that value in board_unsolved
-    board_unsolved[row][col]=value;
+    board_unsolved[row][col] = value;
     // set element on the board
-    document.getElementById(`c${row}${col}`).innerText = inserted[index].toString();
+    document.getElementById(`c${row}${col}`).innerText = value;
     //delete this value form the erasable array to not be deleted by erase
-    erasable.splice(index,1);
+    erasable.splice(index, 1);
     // static counter to allow 3 hints only.
+    Highlight(row, col, false, true);
 }
 
 
