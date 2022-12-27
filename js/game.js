@@ -5,6 +5,7 @@ var EMPTY = 'rgb(227, 227, 227)', NORMAL = 'rgb(32, 123, 255)', ERROR = 'rgb(252
 
 var board_solved, board_unsolved;
 var erasable = []  // this array contains all the places that can be deleted.
+var inserted = []; // array to contain all cells user already filled, will use in hint
 var eraseMode = false;
 
 function SetIds() {
@@ -211,6 +212,15 @@ function CellClick(evt) {
     var x = parseInt(prompt());
     if(x.toString()==='NaN') return;
     board_unsolved[r][c] = x;
+    // loop on inserted and remove the value from it
+    for (let i = 0; i< inserted.length; i++)
+    {
+        if (inserted[i][0] == r && inserted[i][1] == c)
+        {
+            inserted.splice(i, 1);
+            break;
+        }
+    }
     document.getElementById(`c${r}${c}`).innerText = x;
     //endregion
 
@@ -230,6 +240,7 @@ function SetErasableCells() {
             }
         }
     }
+    inserted.push.apply(inserted, erasable); // copy elements from erasable to inserted
 }
 
 
@@ -237,10 +248,11 @@ function Erase(r, c) {
     for (var i = 0; erasable.length; i++) {
         if (erasable[i][0] == r && erasable[i][1] == c) {
             board_unsolved[r][c] == 0;
+            inserted.push([r,c]);
         }
 
     }
-    SetSudoku();   //to draw the board again
+    document.getElementById(`c${r}${c}`).innerText = "";   //to draw the board again
 }
 
 // if the user clicked the eraser it will be true if clicked again it will be false
@@ -251,17 +263,17 @@ $("#eraser").click(() => {
 function Hint(){
     // generate random number
     var rnd = Math.random();
-    var index = Math.floor(erasable.length * rnd);
+    var index = Math.floor(inserted.length * rnd);
     
     // access erasable array to get that random (r,c)
     var row, col;
-    [row, col] = erasable[index];   // destructuring syntax
+    [row, col] = inserted[index];   // destructuring syntax
     // access board_solved to find value at that (r,c)
     var value= board_solved[row][col];
     // set that value in board_unsolved
     board_unsolved[row][col]=value;
-    // call SetSedoku() func to regenerate the board
-    SetSudoku();
+    // set element on the board
+    document.getElementById(`c${row}${col}`).innerText = inserted[index].toString();
     //delete this value form the erasable array to not be deleted by erase
     erasable.splice(index,1);
     // static counter to allow 3 hints only.
