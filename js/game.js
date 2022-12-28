@@ -209,7 +209,13 @@ function cellWrite(r, c, currentNumber) {
     /* the first if statement makes sure that 
         1- the cell is empty in board_unsolved
         2- the same number is not already in the cell. */
-    if ((board_unsolved[r][c] == 0) && (currentNumber !== board_inserted[r][c]) && numberUsageTracker('add', currentNumber)) {
+
+        //lesson: as long as the if statment condition was not met 
+        
+    if ((board_unsolved[r][c] == 0) && (currentNumber !== board_inserted[r][c]) && numberUsageArr[currentNumber - 1] !== 9) {
+
+        
+        numberUsageTracker('add', currentNumber);
 
         if (currentNumber !== board_solved[r][c]) {
 
@@ -228,7 +234,7 @@ function cellWrite(r, c, currentNumber) {
             selectedCell.style.backgroundColor = CellWritten;
 
             board_inserted[r][c] = currentNumber;
-            numberUsageTracker('add', currentNumber);
+          
             undoArr.push(`${currentNumber}${r}${c}w`);
 
         }
@@ -295,6 +301,7 @@ function undoNumber() {
          */
         if (lastOperation == 'r') {
             cellWrite(r, c, number);
+            undoArr.pop();
         }
 
 
@@ -331,8 +338,10 @@ function numberUsageTracker(operation, targetNumber) {
 
 
     if (operation == 'add') {
-        if (numberUsageArr[targetNumber - 1] >= 9) {
+        if (numberUsageArr[targetNumber - 1] >= 8) {
             targetAbutton(targetNumber - 1).style.backgroundColor = numberIsDone;
+            numberUsageArr[targetNumber - 1]++;
+            console.log("number is done ");
             return false;
         }
         else {
