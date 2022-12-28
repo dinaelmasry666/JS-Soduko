@@ -53,9 +53,9 @@ tr{
     font-family: "Segoe UI Black",serif;
 }
 
-button:hover {opacity: 80%;}
+.num_block:hover, .numControl:hover {opacity: 80%;}
 
-button:active {transform: translateY(4px);}
+.num_block:active, .numControl:active {transform: translateY(4px);}
 
 
 /* we chose those rows espcially to sperate each section.  */
@@ -65,8 +65,7 @@ button:active {transform: translateY(4px);}
 
 /* Control buttons  */
 
-
-img {
+.btn_img {
     
     padding-top: 5px;
     height: 38px;
@@ -105,7 +104,7 @@ img {
 }
 
 /* numberStyling - similar to the boxes but edited */
-.numControl{
+.numControlEnabled{
 
     width: 50px;
     height: 50px;
@@ -128,8 +127,30 @@ img {
     font-family: "Segoe UI Black",serif;
 }
 
-/* Right side elements */
+.numControlDisabled{
 
+    width: 50px;
+    height: 50px;
+
+    vertical-align: middle;
+    line-height: 50px;
+
+    margin-left: 2px;
+    margin-right: 2px;
+
+    display: inline-block;
+    text-align: center;
+
+    color: white;
+    background-color:black;
+    border-radius: 15px;
+    border-style: none;
+
+    font-size: 30px;
+    font-family: "Segoe UI Black",serif;
+}
+
+/* Right side elements */
 .eraserStyle{
     position: relative;
     left: 30px;
@@ -153,12 +174,12 @@ img {
   }
 
 /* Left side  elements*/
-
 .notesStyle{
     position: relative;
     background-color:#0e4678 ;
     right: 30px;
 }
+
 .undoStyle{
     position: relative;
     bottom: 55px;
@@ -170,7 +191,27 @@ img {
     background-color:#2cb2f0 ; 
   }
 
+.numSelected{
+    width: 50px;
+    height: 50px;
 
+    vertical-align: middle;
+    line-height: 50px;
+
+    margin-left: 2px;
+    margin-right: 2px;
+
+    display: inline-block;
+    text-align: center;
+
+    color: white;
+    background-color:#B6E2A1 ;
+    border-radius: 15px;
+    border-style: none;
+
+    font-size: 30px;
+    font-family: "Segoe UI Black",serif;
+}
 
 /* toggle selection by class -important when writing numbers */
 
@@ -202,7 +243,7 @@ img {
 
     background: rgb(8, 185, 230);
   
-  padding-top: 30px;
+    padding-top: 30px;
 
 }
 

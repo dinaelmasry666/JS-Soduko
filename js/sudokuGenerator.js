@@ -224,9 +224,7 @@ function Generate() {
     Solve(0);
 
 
-    // then we return the solved board. 
-    console.log(board); // I used this for viewing the solved board.
- console.log ( empty); 
+    // then we return the solved board.
     return board;
 }
 
@@ -321,8 +319,5 @@ function Play(diff) {
     var solved = Generate();
     var unsolved = ApplyDifficulty(diff, solved);
 
-    var insert = []; 
-    Copy2DArray(unsolved, insert);
-
-    return [solved, unsolved,insert];
+    return [solved, unsolved];
 }
