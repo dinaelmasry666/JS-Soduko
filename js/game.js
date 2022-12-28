@@ -114,8 +114,8 @@ function ResetHighlight() {
 function Highlight(r, c, highlightMistake, highlightDuplicate) {
     var n = board_unsolved[r][c];
     ResetHighlight();
-    if (highlightDuplicate) HighlightRuleError();
-    if (highlightMistake) HighlightSolutionError(r, c);
+    if(highlightDuplicate)HighlightRuleError();
+    if(highlightMistake)HighlightSolutionError(r,c);
     HighlightBox(r, c);
     HighlightRowCol(r, c);
     if (n !== 0) HighlightNumber(n);
@@ -137,12 +137,12 @@ function HighlightRuleError() {
         for (let j = 0; j < 9; j++) {
             let tmp = board_unsolved[i][j];
 
-            if (tmp !== 0)
-                occ1[tmp] = occ1[tmp] === undefined ? 1 : occ1[tmp] + 1;
+            if(tmp!==0)
+                occ1[tmp] = occ1[tmp] === undefined? 1 : occ1[tmp] + 1;
 
             tmp = board_unsolved[j][i];
-            if (tmp !== 0)
-                occ2[tmp] = occ2[tmp] === undefined ? 1 : occ2[tmp] + 1;
+            if(tmp!==0)
+                occ2[tmp] = occ2[tmp] === undefined? 1 : occ2[tmp] + 1;
         }
         all_occ_r.push(occ1);
         all_occ_c.push(occ2);
@@ -150,49 +150,49 @@ function HighlightRuleError() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let tmp = board_unsolved[i][j];
-            if (tmp !== 0 && all_occ_r[i][tmp] > 1) {
+            if(tmp !== 0 && all_occ_r[i][tmp] > 1){
                 document.getElementById(`c${i}${j}`).style.backgroundColor = ERROR;
             }
 
             tmp = board_unsolved[j][i];
-            if (tmp !== 0 && all_occ_c[i][tmp] > 1) {
+            if(tmp !== 0 && all_occ_c[i][tmp] > 1){
                 document.getElementById(`c${j}${i}`).style.backgroundColor = ERROR;
             }
         }
     }
 
     // BOX
-    var r = 0, c = 0;
+    var r=0,c=0;
     var all_occ = []
     for (let i = 0; i < 9; i++) {
         var occ = {};
         for (let j = r; j < r + 3; j++) {
             for (let k = c; k < c + 3; k++) {
                 let tmp = board_unsolved[j][k];
-                if (tmp !== 0)
-                    occ[tmp] = occ[tmp] === undefined ? 1 : occ[tmp] + 1;
+                if(tmp!==0)
+                    occ[tmp] = occ[tmp] === undefined? 1 : occ[tmp] + 1;
             }
         }
         c += 3;
-        if (c === 9) {
+        if(c === 9){
             c = 0;
             r += 3;
         }
         all_occ.push(occ);
     }
 
-    r = 0; c = 0;
+    r=0;c=0;
     for (let i = 0; i < 9; i++) {
         for (let j = r; j < r + 3; j++) {
             for (let k = c; k < c + 3; k++) {
                 let tmp = board_unsolved[j][k];
-                if (tmp !== 0 && all_occ[i][tmp] > 1) {
+                if(tmp !== 0 && all_occ[i][tmp] > 1){
                     document.getElementById(`c${j}${k}`).style.backgroundColor = ERROR;
                 }
             }
         }
         c += 3;
-        if (c === 9) {
+        if(c === 9){
             c = 0;
             r += 3;
         }
@@ -206,7 +206,7 @@ function CellClick(evt) {
 
     //region temporary input method
     var x = parseInt(prompt());
-    if (x.toString() === 'NaN') return;
+    if(x.toString()==='NaN') return;
     board_unsolved[r][c] = x;
     document.getElementById(`c${r}${c}`).innerText = x;
     //endregion
