@@ -1,5 +1,7 @@
 (function () {
     var EMPTY = 'rgb(227, 227, 227)', NORMAL = 'rgb(32, 123, 255)', ERROR = 'rgb(252, 78, 78)',
+        DISABLED = 'rgb(110, 110, 110)', ENABLED_NUMBER = 'rgb(255, 164, 32)', SELECTED_NUMBER = 'rgb(182, 226, 161)',
+        ENABLED_HELPER = 'rgb(135, 18, 91)', SELECTED_HELPER = 'rgb(120, 175, 255)',
         H_EMPTY = 'rgb(208, 196, 232)', H_AREA = 'rgb(125, 78, 252)', H_CELL = 'rgb(0, 232, 242)', H_OCC = 'rgb(123, 73, 166)';
 
 
@@ -7,7 +9,7 @@
         insertable = [], empty = [], undoArr = [],
         numberSelected = null,
         numberUsageArr = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        mistakeCount = 0, notes = false;
+        eraseMode = false, notesMode = false, mistakeCount = 0, hintCount;
 
     BodyLoad();
 
@@ -39,8 +41,11 @@
                 if (board_unsolved[i][j] === 0) {
                     document.getElementById(`c${i}${j}`).style.backgroundColor = EMPTY;
                 }
-                else
-                    document.getElementById(`c${i}${j}`).innerText = board_unsolved[i][j];
+                else {
+                    var tmp = document.getElementById(`c${i}${j}`);
+                    tmp.innerText = board_unsolved[i][j];
+                    tmp.style.fontStyle = 'Italic';
+                }
             }
         }
     }
@@ -49,18 +54,22 @@
         var game = Play(diff);
         board_solved = game[0];
         board_unsolved = game[1];
-
     }
 
     function BodyLoad() {
+        var diff = 'e';
         SetIds();
         SetCellOnClick();
-        BuildBoard('e');
+        BuildBoard(diff);
         SetSudoku();
 
-        toggleSelectedNumbers();
-        toggleNotes();
-        eventListenerCall();
+        SetNumbersOnClick();
+        SetHelpersOnClick();
+
+
+        if (diff === 'e') { hintCount = 5; mistakeCount = 10; }
+        else if (diff === 'm') { hintCount = 4; mistakeCount = 7; }
+        else { hintCount = 3; mistakeCount = 5; }
 
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
@@ -142,10 +151,11 @@
         document.getElementById(`c${r}${c}`).style.backgroundColor = H_CELL;
 
         if (highlightDuplicate) HighlightRuleError();
-        if (highlightMistake) HighlightSolutionError(r, c);}
+        if (highlightMistake) HighlightSolutionError(r, c);
+    }
 
     function HighlightSolutionError(r, c) {
-        if (board_unsolved[r][c] !== board_solved[r][c])
+        if (board_unsolved[r][c] !== 0 && board_unsolved[r][c] !== board_solved[r][c])
             document.getElementById(`c${r}${c}`).style.backgroundColor = ERROR;
     }
 
@@ -223,22 +233,60 @@
     function CellClick(evt) {
         var r = parseInt(evt.target.id[1]), c = parseInt(evt.target.id[2]);
 
-        //if(eraseon)
-        if (numberSelected) {
-            if (notes) cellWrite(r, c, true);
-            else cellWrite(r, c, false);
+
+        if (eraseMode) {
+            Erase(r, c);
+            document.getElementById('eraser').click();
         }
+        else if (numberSelected)
+            Write(r, c);
 
 
         Highlight(r, c, true, true);
     }
 
-    function cellWrite(r, c, isNote) {
+    function Erase(r, c) {
+        if (board_unsolved[r][c] !== 0) {
+
+            if (insertable.indexOf(`${r}${c}`) !== -1) {
+                numberUsageTracker('remove', board_unsolved[r][c]);
+
+                board_unsolved[r][c] = 0;
+
+                document.getElementById(`c${r}${c}`).innerText = "";
+
+                empty.push(`${r}${c}`);
+            }
+        }
+    }
+
+    function Hint() {
+        var rnd = Math.random();
+        var index = Math.floor(empty.length * rnd);
+
+        var row = empty[index][0], col = empty[index][1];
+
+
+        var value = board_solved[row][col];
+
+        board_unsolved[row][col] = value;
+
+        var elem = document.getElementById(`c${row}${col}`);
+        elem.innerText = value;
+        elem.style.backgroundColor = NORMAL;
+
+        empty.splice(index, 1);
+        insertable.splice(insertable.indexOf(`${r}${c}`), 1);
+
+        Highlight(row, col, true, true);
+    }
+
+    function Write(r, c) {
         if (insertable.indexOf(`${r}${c}`) === -1) return;
 
         var selectedCell = document.getElementById(`c${r}${c}`);
 
-        if (isNote) {
+        if (notesMode) {
             selectedCell.innerText = numberSelected;
         }
 
@@ -259,24 +307,13 @@
                 empty.splice(idx, 1);
 
             numberUsageTracker('add', numberSelected);
+
+            if (empty.length === 0) CheckWin();
         }
 
     }
 
-    function eventListenerCall() {
-        document.getElementById("undo").addEventListener("click", undoNumber);
-        document.getElementById("notes").addEventListener("click", takingNotes);
-    }
-
-    function takingNotes() {
-        // called by the eventListener
-    }
-
-    function cellScrap() {
-        // to remove the deleted cell from board_inserted
-    }
-
-    function undoNumber() {
+    function Undo() {
 
         if (undoArr.length !== 0) {
 
@@ -299,17 +336,6 @@
         }
     }
 
-    function mistakeCounter() {
-        if (mistakeCount === 2) {
-            // alert("You lose");
-            document.getElementById("mistakes").innerText = `mistakes: 3/3`;
-        } else {
-            document.getElementById("mistakes").innerText = `mistakes: ${++mistakeCount}/3`;
-
-        }
-
-    }
-
     function numberUsageTracker(operation, targetNumber) {
         if (targetNumber <= 0) return;
 
@@ -321,67 +347,93 @@
 
         if (numberUsageArr[targetNumber - 1] === 9) {
             tmp.disabled = true;
-            tmp.className = 'numControlDisabled'
+            tmp.style.backgroundColor = DISABLED;
             numberSelected = null;
         } else {
             if (tmp.disabled === null || tmp.disabled === true) {
                 tmp.disabled = false;
-                tmp.className = 'numControlEnabled';
+                tmp.style.backgroundColor = ENABLED_NUMBER;
             }
         }
 
     }
 
-    function targetAbutton(i) {
-        var header = document.getElementById("findSelectedNumberDiv");
-        var btns = header.getElementsByTagName("button");
-        return btns[i];
-
-    }
-
-    function toggleSelectedNumbers() {
-        //adds an eventListener to all the numbered buttons
-        var header = document.getElementById("findSelectedNumberDiv");
-        var btns = header.getElementsByTagName("button");
-        for (var i = 0; i < btns.length; i++) {
-
-            /*   1- Add Event listener to each number key.  */
-            btns[i].addEventListener("click", numberClicked);
+    function SetNumbersOnClick() {
+        for (var elem of document.getElementsByClassName('numControl')) {
+            elem.addEventListener("click", NumberClicked);
         }
-
     }
 
-    function numberClicked(evt) {
+    function NumberClicked(evt) {
         var _newSelected = parseInt(evt.target.id[1]);
 
         if (numberSelected === _newSelected) {
-            document.getElementById(`n${numberSelected}`).className = 'numControlEnabled';
+            document.getElementById(`n${numberSelected}`).style.backgroundColor = ENABLED_NUMBER;
             numberSelected = null;
         }
 
         else {
             if (numberSelected !== null)
-                document.getElementById(`n${numberSelected}`).className = 'numControlEnabled';
-            document.getElementById(`n${_newSelected}`).className = 'numSelected';
+                document.getElementById(`n${numberSelected}`).style.backgroundColor = ENABLED_NUMBER;
+
+            document.getElementById(`n${_newSelected}`).style.backgroundColor = SELECTED_NUMBER;
 
             numberSelected = _newSelected;
         }
 
     }
 
-    function toggleNotes() {
+    function SetHelpersOnClick() {
+        $("undo").click(function () { Undo(); });
 
-        document.getElementsByClassName("notesStyle")[0].addEventListener("click", function () {
-            var current = document.getElementsByClassName("notesSelected");
-
-            if (this.classList.contains("notesSelected")) {
-                current[0].className = current[0].className.replace("notesSelected", "");
-                notes = false;
-            } else {
-                notes = true;
-                this.classList.add("notesSelected");
+        $("#hint").click(function () {
+            if (hintCount > 0) {
+                hintCount--;
+                Hint();
             }
+            else {
+                var tmp = document.getElementById('hint');
+                tmp.disabled = true;
+                tmp.style.backgroundColor = DISABLED;
+            }
+        })
 
+        $("#notes").click(function () {
+            notesMode = !notesMode;
+
+            var _notes = document.getElementById('notes');
+            if (notesMode)
+                _notes.style.backgroundColor = SELECTED_HELPER;
+            else
+                _notes.style.backgroundColor = ENABLED_HELPER;
         });
+
+        $("#eraser").click(function () {
+            eraseMode = !eraseMode;
+
+            var _eraser = document.getElementById('eraser');
+            if (eraseMode)
+                _eraser.style.backgroundColor = SELECTED_HELPER;
+            else
+                _eraser.style.backgroundColor = ENABLED_HELPER;
+
+        })
+    }
+
+    function CheckWin() {
+        var won = true;
+
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (board_unsolved[i][j] !== board_solved[i][j]) {
+                    won = false;
+                    break;
+                }
+            }
+        }
+
+        if (won) {
+            //some logic
+        }
     }
 }())
