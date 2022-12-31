@@ -54,7 +54,7 @@
                 } else {
                     var tmp = document.getElementById(`c${i}${j}`);
                     tmp.innerText = board_unsolved[i][j];
-                    tmp.style.fontStyle = 'Italic';
+                    tmp.style.fontFamily = 'BlackIFont';
                 }
             }
         }
@@ -157,14 +157,18 @@
         if (settings['Highlight Identical'] && n !== 0) HighlightNumber(n);
 
         if (settings['Highlight Duplicates']) HighlightRuleError();
-        if (settings['Mistakes Checker']) HighlightSolutionError(r, c);
+        if (settings['Mistakes Checker']) HighlightSolutionError();
 
         document.getElementById(`c${r}${c}`).style.backgroundColor = H_CELL;
     }
 
-    function HighlightSolutionError(r, c) {
-        if (board_unsolved[r][c] !== 0 && board_unsolved[r][c] !== board_solved[r][c])
-            document.getElementById(`c${r}${c}`).style.backgroundColor = ERROR;
+    function HighlightSolutionError() {
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (board_unsolved[i][j] !== 0 && board_unsolved[i][j] !== board_solved[i][j])
+                    document.getElementById(`c${i}${j}`).style.backgroundColor = ERROR;
+            }
+        }
     }
 
     function HighlightRuleError() {
@@ -299,9 +303,13 @@
         var selectedCell = document.getElementById(`c${r}${c}`);
 
         if (notesMode) {
-            selectedCell.innerText = numberSelected;
+            if(board_unsolved[r][c] === 0)
+                selectedCell.innerText = numberSelected;
         } else {
+
             var prev = board_unsolved[r][c];
+
+            if(prev === numberSelected) return;
 
             undoArr.push(`${numberSelected}${board_unsolved[r][c]}${r}${c}`);
 

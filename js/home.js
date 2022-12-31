@@ -8,18 +8,18 @@ $(function(){
     });
 
     $('#settings_btn').on('click', function(){
-        location.assign('settings.html')
+        location.assign('../html/settings.html')
     });
 
     $("#easy").click(() => {
-        location.assign('game.html' + '?diff=e');
+        location.assign('../html/game.html' + '?diff=e');
     });
 
     $("#medium").click(() => {
-        location.assign('game.html' + '?diff=m');
+        location.assign('../html/game.html' + '?diff=m');
     });
 
     $("#hard").click(() => {
-        location.assign('game.html' + '?diff=h');
+        location.assign('../html/game.html' + '?diff=h');
     });
 })

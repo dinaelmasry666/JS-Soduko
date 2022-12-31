@@ -2,8 +2,8 @@ body{
     text-align: center;
     background-image: url("../assets/BG.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    /*background-repeat: no-repeat;*/
+    /*background-position: center center;*/
 }
 
 button:hover {
@@ -15,11 +15,17 @@ button:active {
     transform: translateY(4px);
 }
 
+@font-face{
+    font-family: BlackFont;
+    src: url(../assets/seguibl.ttf);
+}
+
 #main_title {
     color: #207bff;
     text-align: center;
     font-size: 80px;
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
+
     margin-top: 20px ;
 }
 
@@ -37,7 +43,7 @@ button:active {
     align-items: center;
     justify-content: center;
 
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
     font-size: 40px;
     margin: auto auto 40px;
     
@@ -67,7 +73,7 @@ button:active {
 
     display: inline-block;
 
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
     font-size: 22px;
 
     color: #fff;

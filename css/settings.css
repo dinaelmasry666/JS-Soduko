@@ -2,8 +2,8 @@ body{
     text-align: center;
     background-image: url("../assets/BG.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    /*background-repeat: no-repeat;
+    background-position: center center;*/
 }
 
 button:hover {
@@ -15,17 +15,29 @@ button:active {
     transform: translateY(4px);
 }
 
+@font-face{
+    font-family: BlackFont;
+    src: url(../assets/seguibl.ttf);
+}
+
+@font-face{
+    font-family: NormalFont;
+    src: url(../assets/segoeui.ttf);
+}
+
 span{
     color: #838383;
-    font-family: "Segoe UI", serif;
+    font-family: NormalFont, serif;
     font-size: 15px;
 }
+
+
 
 #main_title {
     color: #207bff;
     text-align: center;
     font-size: 80px;
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
     margin-top: 20px ;
     margin-bottom: 20px;
 }
@@ -40,7 +52,7 @@ span{
 .option p{
     text-align: left;
     color: black;
-    font-family: "Segoe UI", serif;
+    font-family: NormalFont, serif;
     font-size: 20px;
     margin: 20px;
 }
@@ -59,7 +71,7 @@ span{
     color: white;
 
     font-size: 18px;
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
     border-style: none;
     border-radius: 10px;
     box-shadow: 0 5px 15px 1px #207bff;

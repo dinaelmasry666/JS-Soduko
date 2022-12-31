@@ -2,8 +2,8 @@ body {
     text-align: center;
     background-image: url("../assets/BG.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    /*background-repeat: no-repeat;
+    background-position: center center;*/
 }
 
 table {
@@ -21,6 +21,16 @@ td {
 tr {
     display: block;
     padding-bottom: 5px;
+}
+
+@font-face{
+    font-family: BlackFont;
+    src: url(../assets/seguibl.ttf);
+}
+
+@font-face{
+    font-family: BlackIFont;
+    src: url(../assets/seguibli.ttf);
 }
 
 /*****************************************************************************/
@@ -64,7 +74,7 @@ p{
     display: inline-block;
     margin: 0;
 
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
     font-size: 25px;
     color: #AFC0C8;
 }
@@ -105,7 +115,7 @@ p{
     border-style: none;
 
     font-size: 30px;
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
 }
 
 .numControl {
@@ -127,7 +137,7 @@ p{
     border-style: none;
 
     font-size: 30px;
-    font-family: "Segoe UI Black", serif;
+    font-family: BlackFont, serif;
 }
 
 /*****************************************************************************/
@@ -140,9 +150,7 @@ p{
     background-color: #eee;
     box-shadow: 0 8px 8px 4px lightblue;
 
-    margin: auto;
-
-    margin-top: 20px;
+    margin: 20px auto auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,7 +159,7 @@ p{
 
 #numbersDiv {
     display: inline-block;
-    width: 70%;
+    width: 700px;
 }
 
 /*****************************************************************************/
