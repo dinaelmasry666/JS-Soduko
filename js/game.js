@@ -1,15 +1,26 @@
+"use strict";
 (function () {
     var EMPTY = 'rgb(227, 227, 227)', NORMAL = 'rgb(32, 123, 255)', ERROR = 'rgb(252, 78, 78)',
         DISABLED = 'rgb(110, 110, 110)', ENABLED_NUMBER = 'rgb(255, 164, 32)', SELECTED_NUMBER = 'rgb(182, 226, 161)',
         ENABLED_HELPER = 'rgb(135, 18, 91)', SELECTED_HELPER = 'rgb(120, 175, 255)',
-        H_EMPTY = 'rgb(208, 196, 232)', H_AREA = 'rgb(125, 78, 252)', H_CELL = 'rgb(0, 232, 242)', H_OCC = 'rgb(123, 73, 166)';
+        H_EMPTY = 'rgb(208, 196, 232)', H_AREA = 'rgb(125, 78, 252)', H_CELL = 'rgb(0, 232, 242)',
+        H_OCC = 'rgb(123, 73, 166)',
 
-
-    var board_solved, board_unsolved,
+        board_solved, board_unsolved,
         insertable = [], empty = [], undoArr = [],
         numberSelected = null,
         numberUsageArr = [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        eraseMode = false, notesMode = false, mistakeCount = 0, hintCount;
+        eraseMode = false, notesMode = false, isOn = true,
+        mistakesMade = 0, mistakeCount = 0, hintCount,
+        timerInterval, settings = {
+            'Timer': true,
+            'Mistake Limit': true,
+            'Mistakes Checker': true,
+            'Hide Numbers': true,
+            'Highlight Duplicates': true,
+            'Highlight Area': true,
+            'Highlight Identical': true,
+        }, time = 0;
 
     BodyLoad();
 
@@ -40,8 +51,7 @@
             for (let j = 0; j < 9; j++) {
                 if (board_unsolved[i][j] === 0) {
                     document.getElementById(`c${i}${j}`).style.backgroundColor = EMPTY;
-                }
-                else {
+                } else {
                     var tmp = document.getElementById(`c${i}${j}`);
                     tmp.innerText = board_unsolved[i][j];
                     tmp.style.fontStyle = 'Italic';
@@ -57,7 +67,9 @@
     }
 
     function BodyLoad() {
-        var diff = 'e';
+        var url = new URL(window.location.href);
+        var diff = url.searchParams.get("diff");
+
         SetIds();
         SetCellOnClick();
         BuildBoard(diff);
@@ -66,21 +78,14 @@
         SetNumbersOnClick();
         SetHelpersOnClick();
 
+        RetrieveSettings();
 
-        if (diff === 'e') { hintCount = 5; mistakeCount = 10; }
-        else if (diff === 'm') { hintCount = 4; mistakeCount = 7; }
-        else { hintCount = 3; mistakeCount = 5; }
+        StartTimer();
+        SetPLayPauseClick();
+        SetHintAndMistakes(diff);
 
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                let tmp = board_unsolved[i][j];
-
-                if (tmp === 0) {
-                    insertable.push(`${i}${j}`);
-                    empty.push(`${i}${j}`);
-                } else numberUsageArr[tmp - 1]++;
-            }
-        }
+        SetEmptyAndInsertable();
+        console.log(board_solved);
     }
 
     function HighlightBox(r, c) {
@@ -141,17 +146,20 @@
         }
     }
 
-    function Highlight(r, c, highlightMistake, highlightDuplicate) {
+    function Highlight(r, c) {
         var n = board_unsolved[r][c];
         ResetHighlight();
-        HighlightBox(r, c);
-        HighlightRowCol(r, c);
-        if (n !== 0) HighlightNumber(n);
+        if (settings['Highlight Area']) {
+            HighlightBox(r, c);
+            HighlightRowCol(r, c);
+        }
+
+        if (settings['Highlight Identical'] && n !== 0) HighlightNumber(n);
+
+        if (settings['Highlight Duplicates']) HighlightRuleError();
+        if (settings['Mistakes Checker']) HighlightSolutionError(r, c);
 
         document.getElementById(`c${r}${c}`).style.backgroundColor = H_CELL;
-
-        if (highlightDuplicate) HighlightRuleError();
-        if (highlightMistake) HighlightSolutionError(r, c);
     }
 
     function HighlightSolutionError(r, c) {
@@ -212,7 +220,8 @@
             all_occ.push(occ);
         }
 
-        r = 0; c = 0;
+        r = 0;
+        c = 0;
         for (let i = 0; i < 9; i++) {
             for (let j = r; j < r + 3; j++) {
                 for (let k = c; k < c + 3; k++) {
@@ -237,19 +246,19 @@
         if (eraseMode) {
             Erase(r, c);
             document.getElementById('eraser').click();
-        }
-        else if (numberSelected)
+        } else if (numberSelected)
             Write(r, c);
 
 
-        Highlight(r, c, true, true);
+        Highlight(r, c);
+
     }
 
     function Erase(r, c) {
         if (board_unsolved[r][c] !== 0) {
 
             if (insertable.indexOf(`${r}${c}`) !== -1) {
-                numberUsageTracker('remove', board_unsolved[r][c]);
+                NumberUsageTracker('remove', board_unsolved[r][c]);
 
                 board_unsolved[r][c] = 0;
 
@@ -261,13 +270,16 @@
     }
 
     function Hint() {
+        if(empty.length === 0) return;
+
         var rnd = Math.random();
         var index = Math.floor(empty.length * rnd);
 
         var row = empty[index][0], col = empty[index][1];
 
-
         var value = board_solved[row][col];
+
+        if (settings['Hide Numbers']) NumberUsageTracker('add', value);
 
         board_unsolved[row][col] = value;
 
@@ -276,7 +288,7 @@
         elem.style.backgroundColor = NORMAL;
 
         empty.splice(index, 1);
-        insertable.splice(insertable.indexOf(`${r}${c}`), 1);
+        insertable.splice(insertable.indexOf(`${row}${col}`), 1);
 
         Highlight(row, col, true, true);
     }
@@ -288,13 +300,8 @@
 
         if (notesMode) {
             selectedCell.innerText = numberSelected;
-        }
-
-        else {
-            //mistakeCounter();
-            if (board_unsolved[r][c] !== 0) {
-                numberUsageTracker('remove', board_unsolved[r][c]);
-            }
+        } else {
+            var prev = board_unsolved[r][c];
 
             undoArr.push(`${numberSelected}${board_unsolved[r][c]}${r}${c}`);
 
@@ -306,7 +313,19 @@
             if (idx !== -1)
                 empty.splice(idx, 1);
 
-            numberUsageTracker('add', numberSelected);
+            if (settings['Hide Numbers']) {
+                NumberUsageTracker('add', numberSelected);
+
+                if (board_unsolved[r][c] !== 0) {
+                    NumberUsageTracker('remove', prev);
+                }
+            }
+
+            if (settings['Mistake Limit'] && board_unsolved[r][c] !== board_solved[r][c]) {
+                mistakesMade++;
+                $('#mistakes').text(`Mistakes: ${mistakesMade}/${mistakeCount}`);
+                CheckLose();
+            }
 
             if (empty.length === 0) CheckWin();
         }
@@ -326,8 +345,8 @@
 
             var selectedCell = document.getElementById(`c${r}${c}`);
 
-            numberUsageTracker('remove', _new);
-            numberUsageTracker('add', _old);
+            NumberUsageTracker('remove', _new);
+            NumberUsageTracker('add', _old);
 
             selectedCell.innerText = _old === 0 ? '' : _old;
             board_unsolved[r][c] = _old;
@@ -336,7 +355,7 @@
         }
     }
 
-    function numberUsageTracker(operation, targetNumber) {
+    function NumberUsageTracker(operation, targetNumber) {
         if (targetNumber <= 0) return;
 
         if (operation === 'add') numberUsageArr[targetNumber - 1]++;
@@ -370,9 +389,7 @@
         if (numberSelected === _newSelected) {
             document.getElementById(`n${numberSelected}`).style.backgroundColor = ENABLED_NUMBER;
             numberSelected = null;
-        }
-
-        else {
+        } else {
             if (numberSelected !== null)
                 document.getElementById(`n${numberSelected}`).style.backgroundColor = ENABLED_NUMBER;
 
@@ -384,21 +401,22 @@
     }
 
     function SetHelpersOnClick() {
-        $("undo").click(function () { Undo(); });
+        $("#undo").on('click',function () {
+            Undo();
+        });
 
-        $("#hint").click(function () {
+        $("#hint").on('click',function () {
             if (hintCount > 0) {
                 hintCount--;
                 Hint();
-            }
-            else {
+            } else {
                 var tmp = document.getElementById('hint');
                 tmp.disabled = true;
                 tmp.style.backgroundColor = DISABLED;
             }
         })
 
-        $("#notes").click(function () {
+        $("#notes").on('click',function () {
             notesMode = !notesMode;
 
             var _notes = document.getElementById('notes');
@@ -408,7 +426,7 @@
                 _notes.style.backgroundColor = ENABLED_HELPER;
         });
 
-        $("#eraser").click(function () {
+        $("#eraser").on('click',function () {
             eraseMode = !eraseMode;
 
             var _eraser = document.getElementById('eraser');
@@ -433,7 +451,112 @@
         }
 
         if (won) {
-            //some logic
+            $('#end_img').attr('src', '../assets/game/win.png');
+            $('#end').css('display', 'block');
+            setTimeout(function (){
+                history.back();
+            }, 5000);
+        }
+    }
+
+    function CheckLose(){
+        if(mistakeCount === mistakesMade)
+        {
+            $('#end_img').attr('src', '../assets/game/gameover.png');
+            $('#end').css('display', 'block');
+            setTimeout(function (){
+                history.back();
+            }, 5000);
+        }
+    }
+
+    function RetrieveSettings() {
+        var tmp = allCookieList();
+        for (var settingsKey in settings) {
+            var crnt = tmp[settingsKey];
+
+            if (crnt === undefined || crnt === 'on')
+                settings[settingsKey] = true;
+            else if (crnt === 'off')
+                settings[settingsKey] = false;
+        }
+    }
+
+    function StartTimer() {
+        if (settings['Timer']) {
+            timerInterval = setInterval(function () {
+                time += 1;
+
+                var seconds = (time % 60).toString();
+                var minutes = (Math.floor(time / 60)).toString();
+
+                if (seconds.length === 1) seconds = `0${seconds}`;
+                if (minutes.length === 1) minutes = `0${minutes}`;
+
+                $('#playTime').text(`${minutes}:${seconds}`);
+
+            }, 1000);
+        } else {
+            $('#timerDiv').css('visibility', 'hidden');
+        }
+    }
+
+    function SetPLayPauseClick() {
+        if (settings['Timer']) {
+            $('#pause_btn').on('click', function () {
+                if (isOn) {
+                    clearInterval(timerInterval);
+
+                    $('#board button').each(function (i, obj) {
+                        obj.disabled = true;
+                    });
+
+                    isOn = false;
+                }
+            });
+
+            $('#play_btn').on('click', function () {
+                if (!isOn) {
+                    StartTimer();
+
+                    $('#board button').each(function (i, obj) {
+                        obj.disabled = false;
+                    });
+
+                    isOn = true;
+                }
+            });
+        } else {
+            $('#play_btn, #pause_btn').css('visibility', 'hidden');
+        }
+    }
+
+    function SetHintAndMistakes(diff) {
+        if (diff === 'e') {
+            hintCount = 5;
+            mistakeCount = 10;
+        } else if (diff === 'm') {
+            hintCount = 4;
+            mistakeCount = 7;
+        } else {
+            hintCount = 3;
+            mistakeCount = 5;
+        }
+
+        if(settings['Mistake Limit'])
+            $('#mistakes').text(`Mistakes: 0/${mistakeCount}`);
+    }
+
+    function SetEmptyAndInsertable(){
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                let tmp = board_unsolved[i][j];
+
+                if (tmp === 0) {
+                    insertable.push(`${i}${j}`);
+                    empty.push(`${i}${j}`);
+                } else numberUsageArr[tmp - 1]++;
+            }
         }
     }
 }())

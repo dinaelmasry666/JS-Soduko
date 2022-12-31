@@ -9,7 +9,7 @@ body {
 table {
     margin-right: auto;
     margin-left: auto;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 td {
@@ -33,6 +33,53 @@ button:enabled:active {
 }
 
 /*****************************************************************************/
+#infoDiv, #infoDiv div{
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+#infoDiv div *{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#infoDiv div{
+    width: 200px;
+}
+
+#infoDiv{
+    margin-left: 10px;
+    margin-right: 10px;
+
+    justify-content: space-between;
+}
+
+.infoImg{
+    width: 35px;
+    height: 35px;
+}
+
+p{
+    display: inline-block;
+    margin: 0;
+
+    font-family: "Segoe UI Black", serif;
+    font-size: 25px;
+    color: #AFC0C8;
+}
+
+#play_btn, #pause_btn{
+    background: transparent;
+    border-style: none;
+}
+
+#playPauseDiv{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*****************************************************************************/
 #r3,
 #r6 {
     padding-bottom: 20px;
@@ -45,7 +92,6 @@ button:enabled:active {
     height: 50px;
 
     vertical-align: middle;
-    line-height: 50px;
 
     margin-left: 2px;
     margin-right: 2px;
@@ -68,7 +114,6 @@ button:enabled:active {
     height: 50px;
 
     vertical-align: middle;
-    line-height: 50px;
 
     margin-left: 2px;
     margin-right: 2px;
@@ -115,7 +160,7 @@ button:enabled:active {
     width: 15%;
 }
 
-.helper_btns {
+.helper_btn {
     width: 50px;
     height: 50px;
 
@@ -140,4 +185,25 @@ svg {
 
 path {
     fill: #ffffff;
+}
+
+/*****************************************************************************/
+#end{
+    display: none;
+    background: white;
+    height: 600px;
+    width: 600px;
+    position: absolute;
+
+    top: 65px;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+
+    border-radius: 15px;
+}
+
+#end_img{
+    height: 500px;
 }
