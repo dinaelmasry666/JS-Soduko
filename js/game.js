@@ -262,7 +262,8 @@
         if (board_unsolved[r][c] !== 0) {
 
             if (insertable.indexOf(`${r}${c}`) !== -1) {
-                NumberUsageTracker('remove', board_unsolved[r][c]);
+                if (settings['Hide Numbers'])
+                    NumberUsageTracker('remove', board_unsolved[r][c]);
 
                 undoArr.push(`${0}${board_unsolved[r][c]}${r}${c}`);
 
@@ -276,7 +277,7 @@
     }
 
     function Hint() {
-        if(empty.length === 0) return;
+        if (empty.length === 0) return;
 
         var rnd = Math.random();
         var index = Math.floor(empty.length * rnd);
@@ -305,13 +306,13 @@
         var selectedCell = document.getElementById(`c${r}${c}`);
 
         if (notesMode) {
-            if(board_unsolved[r][c] === 0)
+            if (board_unsolved[r][c] === 0)
                 selectedCell.innerText = numberSelected;
         } else {
 
             var prev = board_unsolved[r][c];
 
-            if(prev === numberSelected) return;
+            if (prev === numberSelected) return;
 
             undoArr.push(`${numberSelected}${board_unsolved[r][c]}${r}${c}`);
 
@@ -355,8 +356,10 @@
 
             var selectedCell = document.getElementById(`c${r}${c}`);
 
-            NumberUsageTracker('remove', _new);
-            NumberUsageTracker('add', _old);
+            if (settings['Hide Numbers']) {
+                NumberUsageTracker('remove', _new);
+                NumberUsageTracker('add', _old);
+            }
 
             selectedCell.innerText = _old === 0 ? '' : _old;
             board_unsolved[r][c] = _old;
@@ -411,11 +414,11 @@
     }
 
     function SetHelpersOnClick() {
-        $("#undo").on('click',function () {
+        $("#undo").on('click', function () {
             Undo();
         });
 
-        $("#hint").on('click',function () {
+        $("#hint").on('click', function () {
             if (hintCount > 0) {
                 hintCount--;
                 Hint();
@@ -426,7 +429,7 @@
             }
         })
 
-        $("#notes").on('click',function () {
+        $("#notes").on('click', function () {
             notesMode = !notesMode;
 
             var _notes = document.getElementById('notes');
@@ -436,7 +439,7 @@
                 _notes.style.backgroundColor = ENABLED_HELPER;
         });
 
-        $("#eraser").on('click',function () {
+        $("#eraser").on('click', function () {
             eraseMode = !eraseMode;
 
             var _eraser = document.getElementById('eraser');
@@ -463,18 +466,17 @@
         if (won) {
             $('#end_img').attr('src', '../assets/game/win.png');
             $('#end').css('display', 'block');
-            setTimeout(function (){
+            setTimeout(function () {
                 history.back();
             }, 5000);
         }
     }
 
-    function CheckLose(){
-        if(mistakeCount === mistakesMade)
-        {
+    function CheckLose() {
+        if (mistakeCount === mistakesMade) {
             $('#end_img').attr('src', '../assets/game/gameover.png');
             $('#end').css('display', 'block');
-            setTimeout(function (){
+            setTimeout(function () {
                 history.back();
             }, 5000);
         }
@@ -553,11 +555,11 @@
             mistakeCount = 5;
         }
 
-        if(settings['Mistake Limit'])
+        if (settings['Mistake Limit'])
             $('#mistakes').text(`Mistakes: 0/${mistakeCount}`);
     }
 
-    function SetEmptyAndInsertable(){
+    function SetEmptyAndInsertable() {
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 let tmp = board_unsolved[i][j];
