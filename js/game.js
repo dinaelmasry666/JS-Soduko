@@ -264,6 +264,8 @@
             if (insertable.indexOf(`${r}${c}`) !== -1) {
                 NumberUsageTracker('remove', board_unsolved[r][c]);
 
+                undoArr.push(`${0}${board_unsolved[r][c]}${r}${c}`);
+
                 board_unsolved[r][c] = 0;
 
                 document.getElementById(`c${r}${c}`).innerText = "";
